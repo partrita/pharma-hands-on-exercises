@@ -1,0 +1,190 @@
+# 모든 것을 종합하기
+
+## 데이터 출처
+
+이 프로젝트에서는 익명화된 CDISC 데이터셋을 사용하며, 다음 위치에서 찾을
+수 있습니다:
+https://github.com/phuse-org/phuse-scripts/tree/master/data/adam/cdisc
+
+## 이 문서 사용 방법:
+
+이 문서에는 코드 청크(일반적으로 밝은 회색 배경)와 텍스트가 있습니다.
+이는 "Rmarkdown" 문서의 예입니다. 문서 내에서 코드를 작성하고 실행할 수
+있으며 결과는 각 코드 청크 아래에 표시됩니다. 텍스트에 작성된 지침을
+따르고 코드 청크를 수정하고 실행하여 지시된 대로 출력을 생성해야 합니다.
+
+이 프로젝트에서는 프로젝트 2와 3의 코드를 가져와 결합하여 인구 통계 참조
+테이블과 유사한 출력을 만듭니다.
+
+이 프로젝트에서는 다음과 유사한 인구 통계 요약 테이블을 만드는 것을
+목표로 합니다: ![인구 통계 테이블](img/MiniProject4_demog_table.png).
+도전 과제를 완료한 후 업데이트된 테이블은 다음과 유사해야 합니다: ![최종
+인구 통계 테이블](img/demog_summary_table.png)
+
+1-7단계에서는 프로젝트 2와 3에서 수행한 코드를 다시 수행합니다. 이
+단계는 프로젝트 2와 3에서 직접 가져온 것이므로 코드를 나누어 설명하지
+않습니다. 여기에 사용된 코드와 논리에 대한 전체 설명은 해당 교육을
+참조하십시오.
+
+1.  ADSL_EFF 데이터 프레임 설정
+
+\`\`\`{r setup adsl} library(tidyverse) library(rio)
+
+adsl \<-
+import("https://github.com/phuse-org/phuse-scripts/raw/master/data/adam/cdisc/adsl.xpt")
+
+adsl_eff \<- adsl %\>% filter(EFFFL == "Y" ) %\>% mutate(SEX =
+recode(SEX, "M" = "Male", "F" = "Female"))
+
+
+    2.  큰 N 및 작은 n 개수 계산 및 데이터 프레임 조인 (프로젝트 2)
+
+    ```{r creating counts}
+    Big_N_cnt <- adsl_eff %>%
+      group_by( TRT01AN, TRT01A  ) %>%
+      count(name = "N")
+
+    small_n_cnt <- adsl_eff %>%
+      group_by( TRT01AN, TRT01A,  SEX ) %>%
+      count(name = "n")
+
+------------------------------------------------------------------------
+
+### 참고: 0 개수 처리
+
+범주 내에 0 개수가 있는 경우가 종종 있습니다. 이를 올바르게 처리하는
+방법을 찾아야 합니다.
+
+참고로 - 여기서는 `tribble()` 함수를 사용하여 작은 장난감 데이터셋을
+만듭니다. `tribble`은 SAS의 `datalines` 또는 `cards` 문과 같이
+작동합니다. 데이터 값(열, 행)을 인라인으로 정의합니다.
+
+\`\`\`{r} myData \<- tribble( \~TRT01AN, \~TRT01A, \~SEX, 1, "Placebo",
+"M", 1, "Placebo", "F", 2, "Active", "F", 2, "Active", "F", 3,
+"Comparator", "M", 3, "Comparator", "M" )
+
+myData %\>% group_by(TRT01AN, TRT01A, SEX) %\>% count(name = "n")
+
+
+    6개의 행을 얻지 못했음을 확인하십시오. 비교군 + 여성("F")이 누락되었고 활성군 + 남성("M")도 누락되었습니다.
+
+    여기저기서 약간의 저글링과 임의적인 수정을 수행할 수 있지만 `complete`를 사용하는 다른 방법이 있습니다. 먼저 개수를 계산한 다음 `ungroup`해야 하며 그런 다음 `complete`를 적용할 수 있습니다. `nesting`은 "데이터에 나타나는 값을 가져옵니다..."라고 말하는 반면 `complete` 함수의 `nesting` 외부에 있는 항목은 중첩된 값으로 SEX의 모든 가능한 값을 확장합니다. `fill = list(n=0)`은 누락된 값(데이터가 없는 경우)에 대해 `n` 변수를 값 = 0으로 채우라는 의미입니다.
+
+    ```{r}
+    myData %>%
+      group_by(TRT01AN, TRT01A, SEX) %>%
+      count(name = "n") %>%
+      ungroup() %>%
+      complete(nesting(TRT01AN, TRT01A), SEX, fill = list(n=0))
+
+**참고로** - `complete` 함수는 *실제로* `expand`, `left_join`,
+`replace_na` 함수의 래퍼입니다. 따라서 원하는 경우 개별 단계를
+수행하거나 함수를 사용할 수 있습니다...
+
+------------------------------------------------------------------------
+
+3.  연령 그룹에 대한 개수 계산 (도전 과제 1) 연령 그룹별 개수를 계산하고
+    프로젝트 2에서 만든 성별 개수와 함께 병합합니다.
+
+\`\`\`{r merging data frames} Agegrp_N_cnt \<- adsl_eff %\>%
+group_by(TRT01AN, TRT01A, AGEGR1) %\>% count(name = "age_total")
+
+age_n_cnt \<- adsl_eff %\>% group_by(TRT01AN, TRT01A, SEX, AGEGR1) %\>%
+count(name = "age_n")
+
+age_mrg_cnt \<- age_n_cnt %\>% left_join(Agegrp_N_cnt, by = c("TRT01AN",
+"TRT01A", "AGEGR1"))
+
+age_mrg_cnt2 \<- age_mrg_cnt %\>% left_join(Big_N_cnt, by = c("TRT01AN",
+"TRT01A"))
+
+age_mrg_cnt3 \<- age_mrg_cnt2 %\>% left_join(small_n_cnt, by =
+c("TRT01A", "TRT01AN", "SEX"))
+
+age_mrg_cnt3 \<- ungroup(age_mrg_cnt3)
+
+
+    4.  연령 그룹별 총계에 대한 백분율 구하기
+
+    ```{r creating percents}
+    age_data_new <- age_mrg_cnt3 %>%
+      mutate(perc_tot = round((age_total/N)*100, 1)) %>%
+      mutate(perc_age = round((age_n/n)*100,1))
+
+    age_pct <- age_data_new %>%
+      mutate(perc_tchar = format(perc_tot, nsmall = 1)) %>%
+      mutate(perc_achar = format(perc_age, nsmall = 1))
+
+    age_n_pct <- age_pct %>%
+      mutate(npct = paste(age_n, paste0("(", perc_achar, ")"))) %>%
+      select(AGEGR1, TRT01A, SEX, npct)
+
+5.  열을 전치하고 이름을 변경하여 함께 설정할 수 있도록 합니다.
+
+\`\`\`{r age_cat} Age_trans \<- pivot_wider(age_n_pct, names_from =
+c(TRT01A,SEX), values_from = npct, values_fill = "0", names_sep = "\_")
+
+age_cat \<- rename(Age_trans, category=AGEGR1) age_cat %\>%
+arrange(category)
+
+
+    ------------------------------------------------------------------------
+
+    **참고**: 데이터 순서 제어를 위한 요인 사용
+
+    아래 `myData`에서 `age`로 정렬하면 R은 연령 범주 "\>=65"를 먼저 배치합니다. 이는 R이 문자 변수를 영숫자순으로 정렬하므로 "\>"가 "1"보다 먼저 오기 때문입니다.
+    (R 버전에 따라 발생할 수도 있고 발생하지 않을 수도 있습니다. 최신 버전은 실제로 올바르게 정렬합니다!)
+
+    ```{r}
+    myData <- tibble::tribble(
+      ~ID, ~age,
+      1, "18-44",
+      2, ">=65",
+      3, "45-64")
+    myData %>%
+      arrange(age)
+
+R의 요인을 사용하면 변수의 불연속 수준과 해당 수준의 순서를 정의할 수
+있습니다. 요인은 원래 R에서 치료 레이블의 순서와 통계적 비교에서 대비를
+구성하기 위한 기본 수준으로 사용할 치료를 정의하는 데 사용되었습니다.
+그러나 사용자 정의 순서로 요소를 재정렬하는 데에도 유용합니다. 여기서는
+0세부터 65세 이상까지의 연령 그룹에 대한 연령 범주를 정의합니다.
+데이터에 해당 연령 범주 중 하나가 없더라도 수준과 순서를 계속
+유지합니다. 즉, 방어적 프로그래밍 관점에서 데이터에서 보지 못한 미래의
+연령 범주를 허용합니다.
+
+`{r} myData <- myData %>%   dplyr::mutate(age = factor(age,                     levels = c("0-2", "3-8", "9-12", "13-17", "18-44", "45-64",">=65"))) myData %>%   arrange(age)`
+
+------------------------------------------------------------------------
+
+6.  요약 통계 생성 (프로젝트 3)
+
+`{r summary stats} age_stat<- adsl_eff %>%   group_by(TRT01AN,TRT01A,SEX) %>%   summarize(mean = mean(AGE) %>% round(digits = 1) %>% format(nsmall=1)  ,             sd = sd(AGE) %>% round(digits = 1) %>% format(nsmall = 1),             med = median(AGE) %>% round (digits=1) %>% format(nsmall=1),             min = min(AGE) %>% format(nsmall=1),             max = max(AGE) %>% format(nsmall=1),            n = n()%>% format(nsmall=0)) age_stat2<-age_stat %>%   mutate(range_minmax= paste0("(",min, ",", max, ")"))`
+
+7.  그룹 해제 및 전치
+
+`{r agestat_cat} desc_stat_long <- age_stat2 %>%  ungroup() %>%   select("TRT01A","SEX", "n", "mean", "med", "sd", "range_minmax") %>%   mutate(across(where(is.numeric), .fns = as.character)) %>%   pivot_longer(-c("TRT01A","SEX"), names_to ="category", values_to = "values" ) agestat_cat <- desc_stat_long %>%   pivot_wider(names_from = c(TRT01A, SEX), values_from = values) %>%   mutate(category = case_when(category == "n" ~ "N",                             category == "med" ~ "Median",                               category == "mean" ~ "Mean",                              category == "sd" ~ "Std Dev",                              category == "range_minmax" ~ "Range(min,max)")) agestat_cat`
+
+8.  프로젝트 4 . 이제 위에서 만든 두 출력 데이터 프레임을 결합합니다.
+    `bind_rows` 함수를 사용하여 두 데이터 프레임(쉼표로 구분)을 함께
+    조인합니다. Bind_rows는 SAS의 SET 문과 매우 유사하며 여러 데이터
+    프레임, 목록 또는 데이터 프레임 목록을 하나로 바인딩하는 데
+    사용됩니다.
+
+이렇게 하면 출력 시 최종 인구 통계 테이블과 유사해집니다.
+
+    age_cat - 연령 그룹 x 성별 x 치료에 대한 개수 및 백분율 포함
+    agestat_cat - 성별 x 치료에 대한 요약 통계 포함
+
+`{r allcomb} dm_allcomb <- bind_rows(age_cat, agestat_cat) dm_allcomb`
+
+    참고: 행 바인딩 시 열은 변수 이름이 일치해야 합니다. 누락된 값이 없지만 있는 경우 해당 열은 'NA' 값으로 채워집니다.
+
+## 도전 과제: 인구 통계 테이블과 일치하도록 다음 작업을 수행하십시오.
+
+1.  연령 변수를 올바른 순서(\<65, 65-80, \>80)로 다시 정렬합니다.
+2.  N을 연령 범주 앞으로 이동합니다.
+3.  민족 및 인종을 추가합니다.
+
+.RMD 파일을 바탕 화면에 저장하고 파일 상단의 "Knit" 버튼을 클릭하여 이
+문서의 HTML 버전을 렌더링합니다.

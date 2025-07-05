@@ -1,0 +1,313 @@
+# 요약 통계 생성
+
+## 이 문서 사용 방법:
+
+이 문서에는 코드 청크(일반적으로 밝은 회색 배경)와 텍스트가 있습니다.
+이는 "Rmarkdown" 문서의 예입니다. 문서 내에서 코드를 작성하고 실행할 수
+있으며 결과는 각 코드 청크 아래에 표시됩니다. 텍스트에 작성된 지침을
+따르고 코드 청크를 수정하고 실행하여 지시된 대로 출력을 생성해야 합니다.
+
+## 데이터 출처
+
+이 프로젝트에서는 익명화된 CDISC 데이터셋을 사용하며, 다음 위치에서 찾을
+수 있습니다:
+https://github.com/phuse-org/phuse-scripts/tree/master/data/adam/cdisc
+
+## R 객체 및 함수
+
+R 내에서는 일반적으로 데이터, 벡터, 목록 등 다양한 유형의 객체를 사용한
+다음 함수를 적용합니다. 함수는 `<함수_이름>(<인수1>=   , <인수2> = )`
+구성을 갖습니다. 함수를 사용할 때 인수 이름을 반드시 사용할 필요는
+없으며 대신 위치별로 인수를 암시적으로 참조할 수 있습니다. 예를 들어
+`myFunction(foo, 1, "bar")`는 R 객체 `foo`를 인수 1의 값으로 전달하고,
+인수 2는 값 `1`을, 인수 3은 문자 값 `"bar"`를 갖습니다. R을 배우는
+동안에는 함수에 인수가 하나만 있는 경우를 제외하고 함수에서 인수를
+명시적으로 명명하고 사용하는 것이 좋습니다. RStudio IDE의 탭 완성 기능을
+사용하여 함수 호출 인수를 완성하는 데 도움을 받을 수 있습니다. 함수의
+인수를 보려면 콘솔에 `?<함수이름>`을 입력하십시오.
+
+## 미니 프로젝트 시작
+
+# R 코딩에 익숙해지고 성별에 따른 연속형 변수의 요약 통계 생성
+
+이 프로젝트에서는 다음과 같은 인구 통계 요약 테이블을 만드는 것을 목표로
+합니다: ![인구 통계 테이블](img/MiniProject3_demog_table.png).
+
+## 목표:
+
+-   ADSL SAS (xpt) 데이터셋 읽기
+-   유효성 분석 모집단 부분집합 만들기
+-   그룹화 변수 내 요약 통계 계산
+-   테이블 작성을 위해 결과 데이터 전치
+
+이 미니 프로젝트에서는 다음 함수 사용법을 복습합니다(MiniProject 1 및
+2에서).
+
+  ---------- ---------- -------------
+  library    read_sas   filter
+  group_by   mutate     select
+  round      format     pivot_wider
+  ---------- ---------- -------------
+
+그리고 다음 함수를 소개합니다.
+
+  ----------- -------------- ---------
+  summarize   pivot_longer   ungroup
+  ----------- -------------- ---------
+
+1.  다음 단계에서는 `tidyverse` 및 `rio` 패키지를 로드합니다. 패키지의
+    함수와 내용을 사용하기 전에 패키지를 로드해야 하며 프로그램/스크립트
+    시작 부분에 수행하는 것이 가장 좋습니다. 코드 청크 오른쪽의 녹색
+    화살표를 클릭하여 아래 청크를 실행합니다. 사용 중인 패키지 저장소를
+    확인하려면 R 콘솔에서 `.libPaths()`를 실행하십시오.
+
+`{r setup} library(tidyverse) library(rio)`
+
+2.  GitHub
+    위치(`https://github.com/phuse-org/phuse-scripts/raw/master/data/adam/cdisc/adsl.xpt`)에서
+    CDISC adsl 데이터를 읽고 할당 연산자 `<-`를 사용하여 R의 객체에
+    할당합니다. URL 위치가 `" "`로 묶인 문자열인지 확인하십시오. `rio`
+    패키지에는 데이터를 R로 읽고 파일 이름에서 데이터 유형을 유추하는
+    `import`라는 함수가 있습니다. 해당 함수의 첫 번째 인수는
+    `file`입니다. 아래 코드의 `file=` 인수 뒤에 위 파일 경로/URL을
+    붙여넣은 다음 녹색 화살표를 사용하여 청크를 실행합니다.
+
+`{r read_adsl} adsl <- import( file = ""  ) adsl`
+
+다음으로 이전 미니 프로젝트에서 했던 것처럼 EFFFL 변수의 값이 "Y"인 adsl
+데이터셋을 필터링합니다. EFFFL이 "Y"인 관찰만 선택하도록 `filter` 함수에
+적절한 코드를 추가하십시오. 또한 SEX 변수를 재코딩하여 "M"인 값을
+"남성"으로, "F"인 값을 "여성"으로 바꿉니다.
+
+`{r create_adsl_eff} adsl_eff <- adsl %>%   filter(  ) %>%   mutate(SEX = recode(SEX, "M" = "Male", "F" = "Female"))`
+
+3.  인구 통계 테이블에 필요한 평균 연령(치료 및 성별별 그룹화)을 보유할
+    데이터 프레임(age_mean)을 만듭니다.
+
+    참고: 연령은 연속형 변수입니다.
+
+아래 R 청크에서는 `adsl_eff` 데이터셋으로 시작하여 `group_by()` 함수에
+지정된 변수(`TRT01AN, TRT01A, SEX`)의 각 수준에서 평균 AGE를 계산합니다.
+이전에 "MiniProject2.Rmd"의 연습 3에서 `group_by`를 사용했습니다.
+`group_by()`는 SAS의 `BY . ;` 문과 매우 유사하게 작동합니다. 각 작업은
+**그룹화 변수의 수준 내에서** 수행됩니다. `group_by()`는 또한 모든
+그룹화 변수를 전달하므로 변수가 `group_by()` 문에 사용되면 결과
+데이터셋에도 나타납니다. 그룹화를 "끄려면" `ungroup()` 함수를 사용해야
+합니다.
+
+{dplyr} 패키지에는 다양한 요약 통계를 계산하는 `summarize()`라는 함수가
+있습니다. 이는 SAS의 `PROC MEANS`와 유사합니다. 아래 청크에서는
+`group_by` 변수의 각 수준에서 평균 AGE를 보유할 "mean"이라는 새 변수를
+만듭니다. 위에서 지정한 by 변수를 아래 코드의 `group_by()` 함수에
+추가하고 청크를 실행하고 `summarize()` 함수의 출력을 관찰하십시오.
+
+  -----------------------------------------------------------------------
+  **질문**: 세 가지 치료 그룹과 두 가지 성별 수준이 있는 경우 변수
+  `TRT01AN, TRT01A, SEX`를 사용하여 `group_by()`를 수행하면 결과
+  데이터셋에 몇 개의 행이 있습니까? \|
+
+  -----------------------------------------------------------------------
+
+`{r} adsl_eff %>%   group_by(  ) %>%   summarize(mean =(mean(AGE)))`
+
+평균 값에 소수점 이하 5자리가 출력되는 것을 확인하십시오. 종종 그렇게
+많은 자릿수가 필요하지 않으므로 round() 함수를 사용하여 소수점 이하 한
+자리로 반올림할 수 있습니다. 또한 보고를 위해 지정된 표준과 일치하도록
+평균 변수를 문자로 서식을 지정하고 최종 표시에 백분율을 추가할 수 있도록
+해야 합니다. `nsmall` 인수가 있는 `format()`을 사용하면 숫자에서
+문자로의 전환이 완료됩니다. `round()` 및 `format()` 함수에 대한 요약은
+MiniProject2.Rmd의 연습 7-8을 참조하십시오. 아래 청크를 실행하여 적절한
+서식이 지정된 새 평균 변수를 확인하십시오.
+
+`{r} adsl_eff %>%   group_by( TRT01A, TRT01AN, SEX ) %>%   summarize(mean = (mean( AGE ) %>%                       round(digits =  ) %>%                       format(nsmall =  ))   )`
+
+4.  이제 평균을 생성하는 방법을 잘 알았으므로 summarize() 함수를
+    사용하여 표준 편차, 중앙값, 범위 및 개수를 포함하여 필요한 다른 요약
+    통계를 생성할 수 있습니다. 각 함수는 각각 예상대로 `sd()`,
+    `median()`, `min()`, `max()` 및 `n()`입니다.
+
+위 정보를 사용하여 데이터셋 `adsl_eff`에서 시작하여 요약 통계를 보유하는
+`age_stat`이라는 데이터 프레임을 만들어 아래 코드를 완성하십시오.
+"sd"라는 제목의 표준 편차 변수, "med"라는 제목의 중앙값, "min"이라는
+제목의 최소값, "max"라는 제목의 최대값, "n"이라는 제목의 개수 변수(전체
+데이터셋에 대한 개수)를 만듭니다. 각 변수를 format 함수를 사용하여
+문자로 변환하고 sd에 대해 소수점 이하 1자리, 나머지에 대해 0을 지정해야
+합니다.
+
+\`\`\`{r} age_stat\<- adsl_eff %\>% group_by(TRT01AN,TRT01A,SEX) %\>%
+summarize(mean = (mean( ) %\>% round(digits = 1) %\>% format(nsmall=1))
+, sd = (sd( ) %\>% round(digits = 1) %\>% format(nsmall = 1)), med =
+median( ) , min = min( ), max = max( ), n = n())
+
+age_stat
+
+
+    5.  출력 테이블에는 범위가 포함되므로 최소값과 최대값을 문자열로 결합해야 합니다(Mini Project 2에서 개수 및 백분율과 마찬가지로). 아래 코드 청크에서 `age_stat2`라는 데이터 프레임을 생성하고 새 변수에 `min`과 `max`를 결합하여 range_minmax라는 범위 통계를 얻습니다.
+
+    ```{r}
+    age_stat %>%
+        mutate(range_minmax=paste("(",min, ",", max, ")"))
+
+첫 번째 괄호와 첫 번째 숫자 사이에 공백이 있음을 확인하십시오. 아래
+코드를 업데이트하여 공백을 제거하십시오. Mini Project 2의 연습 9를 다시
+참조하십시오.
+
+\`\`\`{r} age_stat2\<-age_stat %\>% mutate(range_minmax= paste("(",min,
+",", max, ")"))
+
+age_stat2
+
+
+    6.  요약 통계를 단일 결과 변수로 전치합니다.
+
+    -   이제 group_by 변수가 더 이상 필요하지 않으므로 `ungroup()` 함수를 사용하여 데이터를 초기 설정으로 되돌립니다. 데이터를 `ungroup()`하지 않으면 `select()` 문이 할당된 그룹화 변수를 전달한다는 점을 기억하십시오.
+
+    `ungroup()`한 버전과 비교하여 `age_stat2`를 볼 때 표시되는 차이점을 확인하십시오.
+
+    ```{r}
+    age_stat2
+
+    age_stat2 %>%
+        ungroup()
+
+현재 `age_stat` 데이터에는 각 요약 통계에 대해 하나의 열이 있습니다.
+그러나 예제 테이블에서는 치료 변수와 이 경우 `SEX` 변수로 열을
+정의하려고 합니다. 이 데이터 재형식을 달성하기 위해 데이터를 피벗(즉,
+전치)하여 치료 변수 `TRT01AN` 및 `TRT01A`와 그룹화 변수 `SEX`(이전과
+동일)에 대한 열이 있는 긴 형식 데이터셋을 만듭니다. 그러나 요약 통계
+열을 통계 이름을 제공하는 하나의 열과 해당 통계 값을 제공하는 하나의
+열로 변환합니다. 그런 다음 최종 테이블을 표시하려는 형식으로 다시
+피벗(전치)할 수 있습니다.
+
+`pivot_longer()` 함수는 데이터를 "넓은" 형식에서 "긴" 형식으로 피벗(또는
+전치)합니다. 이 함수에는 세 가지 주요 인수가 있습니다. `cols`는 R에
+피벗(전치)할 열을 알려주고, `names_to`는 R에 피벗된 변수의 ***이름***을
+보유하는 새 변수의 이름을 알려주고, `values_to`는 R에 피벗된 변수의
+***값***을 보유하는 새 변수의 이름을 알려줍니다.
+
+`pivot_longer` 전에 `select()` 함수를 사용하면 피벗된 전치 데이터에
+표시하려는 변수만 선택할 수 있습니다. 대부분의 경우 모든 변수를 전치하고
+싶지는 않을 것입니다. 피벗(전치)할 열을 세 가지 방법으로 정의할 수
+있습니다. 명시적으로 이름을 지정하거나 열 또는 변수 번호로 식별하거나
+`-<변수>`를 사용하여 R에 피벗에서 ***제외***할 변수를 알릴 수 있습니다.
+둘 이상의 변수를 제외하려면 `c()` 컬렉션 함수를 사용하여 변수 이름
+벡터를 정의합니다. 아래 코드에서 위에서 계산한 요약 통계 목록을 select
+함수에 추가합니다(최소값과 최대값은 제외하고 범위는 포함).
+
+데이터를 피벗(전치)하기 전에 피벗할 열이 모두 동일한 유형인지 확인해야
+합니다. `age_stat2` 데이터에서 서식이 지정된 값(`mean`, `sd`,
+`range_minmax`)은 문자이지만 `med`와 `n`은 여전히 숫자입니다.
+`is.numeric()` 조건을 충족하는 모든 변수에 `as.character()` 함수를
+적용하여 이 작업을 수행합니다. `mutate()`와 `across()`를 결합하면 조건을
+충족하는 각 열 변수에 동일한 함수가 적용됩니다.
+
+-\> ***SAS 사용자를 위한 R:*** `select()` 함수는 SAS의 `keep;` 문과 같이
+작동합니다.
+
+\`\`\`{r} desc_stat_long \<- age_stat2 %\>% ungroup() %\>%
+select("TRT01A","SEX", "n", "mean", "med", "sd", "range_minmax") %\>%
+mutate(across(where(is.numeric), .fns = as.character)) %\>%
+pivot_longer(-c("TRT01A","SEX"), names_to ="category", values_to =
+"values" )
+
+desc_stat_long
+
+
+    7.  이제 `pivot_wider()` 함수를 사용하여 아래 인구 통계 테이블과 일치하도록 `desc_stat_long` 데이터를 전치할 수 있습니다.
+
+    ![인구 통계 테이블](images/demog_summary_table.PNG).
+
+    `pivot_wider()` 사용 방법에 대한 정보는 MiniProject2.Rmd의 연습 13을 참조하십시오. (힌트: `pivot_wider()`와 `pivot_longer()`는 `pivot_longer()`가 R에 열 이름과 값이 ***어디로*** 가는지 알려주는 반면 `pivot_wider()`는 R에 열 이름과 값이 ***어디에서*** 오는지 알려준다는 점을 제외하고 유사합니다. 아래 코드를 시도하고 `names_from` 인수에 사용할 다른 변수를 선택하십시오. 선택 사항이 결과 데이터셋의 모양을 어떻게 변경하는지 확인하고 원하는 최종 테이블과 일치하는 최상의 표현을 선택하십시오. 열을 정의하는 데 둘 이상의 변수를 사용해야 하는 경우 `c()` 함수를 사용하여 변수를 변수 이름 벡터로 수집할 수 있습니다.
+
+    ```{r}
+    desc_stat_long %>%
+      pivot_wider(names_from = TRT01A, values_from = values)
+
+8.  테이블 내 예상 이름과 일치하도록 `category` 값을 변경하여 최종
+    데이터 프레임 `agestat_cat`을 생성합니다.
+
+`mutate()` 함수 내에서 `case_when()` 함수를 사용하여 여러 'if' 및 'else
+if' 문을 벡터화할 수 있습니다. 인수는 두 개의 측면 수식 시퀀스를
+포함합니다. 왼쪽(LHS)은 이 경우와 일치하는 값을 결정합니다.
+오른쪽(RHS)은 대체 값을 제공합니다.
+
+-\> ***SAS 사용자를 위한 R:*** `case_when()` 함수는 SAS의 SQL 'CASE
+WHEN' 문과 같이 작동합니다.
+
+\`\`\`{r} agestat_cat \<- desc_stat_long %\>% pivot_wider(names_from =
+c(TRT01A, SEX), values_from = values) %\>% mutate(category =
+case_when(category == "n" \~ "N", category == "med" \~ "Median",
+category == "mean" \~ "Mean", category == "sd" \~ "Std Dev", category ==
+"range_minmax" \~ "Range(min,max)"))
+
+agestat_cat
+
+
+    ------------------------------------------------------------------------
+
+    ## 도전 과제 1: 체중 및 키에 대한 유사한 정보를 얻습니다.
+
+    코드가 재현 가능한지 확인하려면 RStudio IDE 인터페이스의 "knit" 버튼을 사용하여 저장된 .Rmd 파일을 기반으로 HTML 파일을 만듭니다. 코드 청크가 재현 가능하면 결과적으로 HTML 파일을 얻어야 합니다. 그렇지 않은 경우(오류가 있거나 "knit" 프로세스가 실패하는 경우) "Run" 버튼 오른쪽의 화살표를 클릭하고 "Restart R and Run All Chunks"를 선택합니다. 그런 다음 문제가 있는 청크를 해결하십시오.
+
+    .RMD 파일을 바탕 화면에 저장하고 파일 상단의 "Knit" 버튼을 클릭하여 이 문서의 HTML 버전을 렌더링합니다.
+
+    ### 추가 학점 / 최고 팁:
+
+    코드를 3번 이상 복사하여 붙여넣어야 하는 경우 함수를 작성할 때입니다. R의 함수는 SAS의 매크로와 약간 비슷합니다.
+
+    다음과 같은 코드에서 빠르게 변환할 수 있습니다.
+
+    ```{r}
+    age_stat<- adsl_eff %>%
+      group_by(TRT01AN,TRT01A,SEX) %>%
+      summarize(mean = mean( ) %>% round(digits = 1) %>% format(nsmall=1)  ,
+                sd = sd( ) %>% round(digits = 1) %>% format(nsmall = 1),
+                med = median( )  ,
+                min = min( ),
+                max = max( ),
+                n = n())
+
+    age_stat
+
+다음과 같은 함수로:
+
+`{r, eval = FALSE} varSummary <- function(adsl_eff, TRT01AN, TRT01A, SEX) {   adsl_saf %>%     group_by(TRT01AN,TRT01A,SEX) %>%     summarize(mean = mean( ) %>% round(digits = 1) %>% format(nsmall=1)  ,               sd = sd( ) %>% round(digits = 1) %>% format(nsmall = 1),               med = median( )  ,               min = min( ),               max = max( ),               n = n()) }`
+
+RStudio IDE의 "코드" 메뉴에서 "함수 추출"을 사용합니다. 그런 다음 이
+코드를 정리하여 함수 인수를 변경할 수 있습니다. 그런 다음 코드를
+추상화하여 코드를 실행하는 사용자가 변경해야 하는 항목을 변경할 수
+있도록 합니다. 이 추상화는 tidyverse 내에서 코드를 작성하는 것이 약간 더
+복잡하다는 것을 의미합니다. 데이터셋 내의 변수를 참조하고 R이
+환경(RStudio IDE의 오른쪽 상단 탭)에서 해당 변수를 객체로 찾으려고 하는
+것을 중지해야 합니다.
+
+입력 데이터 인수를 {tidyverse} 함수에서 보는 것과 일치하도록 .data로
+변경하고 요약하려는 데이터셋의 변수 이름인 인수를 추가해 보겠습니다.
+지금은 요약되는 변수에 관계없이 함수가 `TRT01AN, TRT01A, SEX`로
+요약한다고 가정해 보겠습니다.
+
+\`\`\`{r, eval = FALSE} varSummary \<- function(.data, variable) { .data
+%\>% group_by(TRT01AN,TRT01A,SEX) %\>% summarize(mean = mean(variable )
+%\>% round(digits = 1) %\>% format(nsmall=1) , sd = sd(variable) %\>%
+round(digits = 1) %\>% format(nsmall = 1), med = median(variable) , min
+= min(variable ), max = max(variable ), n = n()) }
+
+adsl_saf %\>% varSummary(AGE)
+
+
+    여기서 문제는 R이 현재 환경에 존재하지 않는 AGE라는 객체를 찾고 있다는 것입니다. 대신 전달하는 "AGE" 인수가 환경을 찾는 대신 데이터 범위 내에서 해석되어야 한다고 R에 알려야 합니다. 비결은 함수 내에서 변수를 큰따옴표로 묶거나 "포옹"하는 것입니다. SAS에서 매크로 변수를 사용하는 것과 약간 비슷합니다.
+
+    ```{r}
+    varSummary <- function(.data = NULL, variable = NULL) {
+      .data %>%
+        group_by(TRT01AN,TRT01A,SEX) %>%
+        summarize(mean = mean({{variable}}) %>% round(digits = 1) %>% format(nsmall=1)  ,
+                  sd = sd({{variable}}) %>% round(digits = 1) %>% format(nsmall = 1),
+                  med = median({{variable}})  ,
+                  min = min({{variable}}),
+                  max = max({{variable}}),
+                  n = n())
+    }
+
+    adsl_saf %>%
+      varSummary(AGE)
