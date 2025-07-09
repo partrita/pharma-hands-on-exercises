@@ -1,0 +1,56 @@
+project:
+  type: book
+
+book:
+  title: "Pharma Hands-on Exercises"
+  author:
+    - Mike K Smith
+    - Natalia Andriychuk
+    - Samir Parmar
+    - Leanne Vicente
+    - Rajni Bhaya
+    - Taeyoon Kim
+  date: "2025-07-08"
+  chapters:
+    - index.qmd
+    - MiniProject1.qmd
+    - MiniProject2.qmd
+    - MiniProject3.qmd
+    - MiniProject4.qmd
+    - MiniProject5.qmd
+    - MiniProject6.qmd
+    - MiniProject7.qmd
+    - MiniProject8.qmd 
+    - MiniProject9.qmd
+    - MiniProject10.qmd
+    - MiniProject11.qmd
+    - MiniProject12.qmd
+    - MiniProject13.qmd
+    - MiniProject14.qmd
+
+#bibliography: references.bib
+link-citations: true
+
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+  pdf:
+    documentclass: report
+    papersize: a4
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    colorlinks: true
+    fig_width: 3
+    fig_height: 2
+    fig_caption: true
+    df_print: kable
+    highlight: tango
+    include-in-header: 
+      text: |
+        \usepackage{pdfpages}
+    
+mainfont: "Noto Serif CJK KR"
+sansfont: "Noto Sans CJK KR"

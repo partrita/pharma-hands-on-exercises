@@ -1,0 +1,12 @@
+# Abstract {.unnumbered}
+
+This book provides a hands-on introduction to R for pharmaceutical data analysis. Through a series of mini-projects, you will learn how to read, explore, and summarize data, create publication-quality tables and figures, and develop your own functions. The book covers a wide range of topics, from the basics of R programming to advanced concepts like tidy evaluation and automated testing. By the end of this book, you will have the skills and confidence to use R for your own data analysis projects.
+
+The book is structured as a series of mini-projects, each focusing on a specific aspect of data analysis. The projects are designed to be completed in order, with each project building on the concepts and skills learned in the previous ones. The projects cover a wide range of topics, including:
+
+*   **Data import and exploration**: Learn how to read data from various file formats, including `.xpt` files, and perform initial data exploration using functions from the `{tidyverse}`.
+*   **Data summarization and tabulation**: Learn how to create summary tables of continuous and categorical data, including counts, percentages, and descriptive statistics.
+*   **Data visualization**: Learn how to create a variety of plots using the `{ggplot2}` package and its extensions, including spaghetti plots, boxplots, and distribution plots.
+*   **Function writing and iteration**: Learn how to write your own functions to automate repetitive tasks and how to apply functions to data iteratively using loops and the `{purrr}` package.
+*   **Reproducible research and debugging**: Learn how to create reproducible examples using the `{reprex}` package and how to debug your code using a variety of tools and techniques.
+*   **Advanced topics**: Learn about more advanced topics like tidy evaluation, automated testing with `{testthat}`, and code style.
