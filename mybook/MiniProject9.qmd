@@ -1,5 +1,5 @@
 ---
-title: "Mini-project 9 - Reproducible examples and {reprex}"
+title: "9 - Reproducible examples and {reprex}"
 author: "Leanne Vicente"
 date: "3/8/2023"
 output: html_document

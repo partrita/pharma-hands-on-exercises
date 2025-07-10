@@ -1,5 +1,5 @@
 ---
-title: "Mini-project 6 - {ggplot2} extensions"
+title: "{ggplot2} extensions"
 author: "Mike K Smith"
 date: "2/21/2023"
 output: html_document

@@ -1,5 +1,5 @@
 ---
-title: "Mini-project 5 - Getting started with {ggplot2}"
+title: "5 - Getting started with {ggplot2}"
 author: "Mike K Smith"
 date: "2/16/2023"
 output: html_document
@@ -144,8 +144,8 @@ NOTE: If you are saving from this .rmd file then the plots and output object wil
 
 ```{r}
 plot4 
-ggsave(filename = "myPlot.png", device = "png", width = 192, height = 108, units = "mm")
-saveRDS(object = plot4, file = "savedPlot.rds")
+#ggsave(filename = "myPlot.png", device = "png", width = 192, height = 108, units = "mm")
+#saveRDS(object = plot4, file = "savedPlot.rds")
 ```
 
 ## 9. Add a summary statistic e.g. median

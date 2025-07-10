@@ -1,5 +1,5 @@
 ---
-title: "Mini-project 11 - Tidy evaluation"
+title: "11 - Tidy evaluation"
 author: "Samir Parmar"
 date: "3/14/2023"
 output: html_document

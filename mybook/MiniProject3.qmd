@@ -1,5 +1,5 @@
 ---
-title: "Mini-project 3 - Generating grouped summary statistics"
+title: "3 - Generating grouped summary statistics"
 author: "Mike K Smith"
 date: "02/14/2023"
 output: html_document

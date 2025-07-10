@@ -13,20 +13,20 @@ book:
   date: "2025-07-08"
   chapters:
     - index.qmd
-    - MiniProject1.qmd
-    - MiniProject2.qmd
-    - MiniProject3.qmd
-    - MiniProject4.qmd
-    - MiniProject5.qmd
-    - MiniProject6.qmd
-    - MiniProject7.qmd
-    - MiniProject8.qmd 
-    - MiniProject9.qmd
-    - MiniProject10.qmd
-    - MiniProject11.qmd
-    - MiniProject12.qmd
-    - MiniProject13.qmd
-    - MiniProject14.qmd
+    - MiniProject1_ko.qmd
+    - MiniProject2_ko.qmd
+    - MiniProject3_ko.qmd
+    - MiniProject4_ko.qmd
+    - MiniProject5_ko.qmd
+    - MiniProject6_ko.qmd
+    - MiniProject7_ko.qmd
+    - MiniProject8_ko.qmd 
+    - MiniProject9_ko.qmd
+    - MiniProject10_ko.qmd
+    - MiniProject11_ko.qmd
+    - MiniProject12_ko.qmd
+    - MiniProject13_ko.qmd
+    - MiniProject14_ko.qmd
 
 #bibliography: references.bib
 link-citations: true

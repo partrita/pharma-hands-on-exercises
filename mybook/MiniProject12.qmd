@@ -1,5 +1,5 @@
 ---
-title: "Mini-project 12 - Testing"
+title: "Testing"
 author: "Natalia Andriychuk"
 output: html_document
 date: "3/17/2023"

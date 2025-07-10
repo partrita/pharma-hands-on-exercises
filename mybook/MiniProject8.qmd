@@ -1,5 +1,5 @@
 ---
-title: "Mini-project 8 - Applying functions through iteration"
+title: "Applying functions through iteration"
 author: "Mike K Smith"
 date: "3/6/2023"
 output: html_document

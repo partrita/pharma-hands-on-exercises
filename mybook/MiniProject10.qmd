@@ -1,5 +1,5 @@
 ---
-title: "Mini-project 10 - Debugging"
+title: "Debugging"
 author: "Mike K Smith"
 date: "3/9/2023"
 output: html_document
@@ -30,9 +30,9 @@ Over time your collection of STUFF in R will grow. The problem is that if you do
 
 The easiest way to spring clean your R session is to clean out the Environment and restart R.
 
-![R Global Environment with four objects: Data called "adsl", vectors "ALTmax" and "ALTmin" and a function called "uniqueVal"](img/MiniProject10_Environment.PNG)
+![R Global Environment with four objects: Data called "adsl", vectors "ALTmax" and "ALTmin" and a function called "uniqueVal"](img/MiniProject10_Environment.png)
 
-![R Global Environment with popup dialogue that appears when you click on the "broom" icon](img/MiniProject10_CleaningEnvironment.PNG)
+![R Global Environment with popup dialogue that appears when you click on the "broom" icon](img/MiniProject10_CleaningEnvironment.png)
 
 This will clean out the Environment and start "fresh". REMEMBER TO SAVE ANYTHING YOU MIGHT NEED TO KEEP BEFORE YOU DO THIS!!
 
@@ -40,7 +40,7 @@ For reasons of reproducibility, it's a good idea to start with a "clean" environ
 
 When I start an R session, I like to start with this "clean page". If you go to the General tab of the "Global Options" in RStudio IDE there's an option which never reloads existing workspaces (Environment) when you start R and never asks if you would like to save the workspace on exit. If you really want to be clean and tidy (and reproducible) then you should uncheck the "Restore" option and select "Never" for the "Save" option. This ensures that every R session is completely clean when you start it. Every time.
 
-![Global Options (in RStudio IDE) to neither save nor restore objects in a Workspace](img/MiniProject10_GlobalOptions.PNG)
+![Global Options (in RStudio IDE) to neither save nor restore objects in a Workspace](img/MiniProject10_GlobalOptions.png)
 
 ## Turn it off then turn it on again.
 
@@ -58,7 +58,7 @@ To make sure that your code is reproducible, you need to ensure that all the lib
 
 The way to ***ensure*** that your script is reproducible is to restart R. In the RStudio IDE you can do this from the "Session" menu, or using the shortcut keys CTRL+SHIFT+F10.
 
-![Restart R from the RStudio Session menu or shortcut key CTRL+SHIFT+F10](img/MiniProject10_Restart_R.PNG)
+![Restart R from the RStudio Session menu or shortcut key CTRL+SHIFT+F10](img/MiniProject10_Restart_R.png)
 
 This advice to restart R is also particularly true before you install packages (and after!). Installing packages in the middle of an R session is like changing the tires of a bus when it's travelling down the motorway...
 
@@ -119,7 +119,7 @@ Look at the Environment now. You'll see that instead of the Global Environment, 
 The Console now has additional buttons showing "Next", "Continue" and "Stop" and some other buttons. The "arrow into { }" means that you want R to step forward INTO the next function. The "arrow with lines" means that you want R to complete the rest of the function. The Console prompt now also says "Browse[2]".
 
 RStudio has also opened the function `myFunction` code in a separate window and there's a little green arrow showing you approximately where you are in the function.\
-![Showing the RStudio IDE windows that appear when the user runs \`debugonce\` on the function called "myFunction".](img/MiniProject10_debugonce.PNG)
+![Showing the RStudio IDE windows that appear when the user runs \`debugonce\` on the function called "myFunction".](img/MiniProject10_debugonce.png)
 
 What you can do from here is to run individual lines in the function, submit commands and create NEW objects (or replace values) in the function Environment.\
 If you step through each line of the function, you'll see that the value assigned to `a` is 3 within the function Environment. As you step through each line of the function you can see new objects being defined and used from the Environment associated with the function.

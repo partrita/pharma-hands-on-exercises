@@ -1,5 +1,5 @@
 ---
-title: "Mini-project 7 - Getting started writing functions"
+title: "Getting started writing functions"
 author: "Mike K Smith"
 date: "3/2/2023"
 output: html_document

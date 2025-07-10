@@ -1,5 +1,5 @@
 ---
-title: "Mini-project13 - Code style"
+title: "13 - Code style"
 author: "Mike K Smith"
 output: html_document
 date: "2023-05-10"

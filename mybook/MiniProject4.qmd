@@ -1,5 +1,5 @@
 ---
-title: "Mini-project 4 - Creating summary table data"
+title: "4 - Creating summary table data"
 author: "Mike K Smith"
 date: "2/15/2023"
 output: html_document

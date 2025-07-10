@@ -1,5 +1,5 @@
 ---
-title: "Mini-project 14 - R snippets"
+title: "14 - R snippets"
 author: "Leanne Vicente"
 date: "5/15/2023"
 eval: false

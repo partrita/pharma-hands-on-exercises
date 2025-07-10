@@ -1,5 +1,5 @@
 ---
-title: "Mini-project 2 - Summarising continuous and categorical data"
+title: "2 - Summarising continuous and categorical data"
 author: "Mike K Smith"
 date: "02/13/2023"
 output: html_document 
