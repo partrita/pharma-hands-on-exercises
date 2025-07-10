@@ -2,7 +2,7 @@
 authors = ["Taeyoon Kim <deepthought@postech.ac.kr>"]
 channels = ["conda-forge"]
 name = "pharma-hands-on-exercises"
-platforms = ["osx-arm64"]
+platforms = ["osx-arm64", "linux-64"]
 version = "0.1.0"
 
 [tasks]
