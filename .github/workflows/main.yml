@@ -51,7 +51,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: quarto-pdf-book
-          path: mybook/_book/Pharma-Hands-on-Exercises.pdf.pdf
+          path: mybook/_book/Pharma-Hands-on-Exercises.pdf
           # 생성된 PDF 파일을 'quarto-pdf-book'이라는 이름의 아티팩트로 업로드합니다.
 
   create-release:
