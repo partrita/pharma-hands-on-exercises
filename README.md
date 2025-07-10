@@ -1,70 +1,65 @@
-# R Hands-on Exercises
+# R 실습
 
-## License information
+## 라이선스 정보
 
-The contents of this repository are provided under the Creative Commons Attribution (CC-BY) 4.0 license as laid out in the LICENSE.md file.
+이 저장소의 내용은 LICENSE.md 파일에 명시된 Creative Commons Attribution (CC-BY) 4.0 라이선스에 따라 제공됩니다.
 
-## Background
+## 배경
 
-The R projects in this repository designed for the programmers in clinical research who are familiar with programming concepts and who might have previously used SAS for data transformation and visualization. Projects have useful tips that help to connect most common SAS programming principles with techniques that are used in R. All exercises use open-source [CDISC ADaM datasets](https://github.com/phuse-org/phuse-scripts/tree/master/data/adam/cdisc) that were created for training/testing purposes.
+이 저장소의 R 프로젝트는 프로그래밍 개념에 익숙하며 이전에 SAS를 사용하여 데이터 변환 및 시각화를 해본 경험이 있는 임상 연구 프로그래머를 위해 설계되었습니다. 프로젝트에는 가장 일반적인 SAS 프로그래밍 원칙을 R에서 사용되는 기술과 연결하는 데 도움이 되는 유용한 팁이 포함되어 있습니다. 모든 연습은 훈련/테스트 목적으로 생성된 오픈 소스 [CDISC ADaM 데이터셋](https://github.com/phuse-org/phuse-scripts/tree/master/data/adam/cdisc)을 사용합니다.
 
-## Why are Pfizer sharing this?
+## 화이자가 이것을 공유하는 이유
 
-We have created these learning modules to help our colleagues migrate to using R, giving them data and tasks that will be familiar to them. By sharing these modules, we hope that others might further refine the content, adding new modules or refining the concepts in them.
+우리는 동료들이 R로 마이그레이션하는 데 도움이 되도록 이 학습 모듈을 만들었으며, 그들에게 익숙한 데이터와 작업을 제공했습니다. 이 모듈을 공유함으로써 다른 사람들이 콘텐츠를 더욱 개선하고, 새로운 모듈을 추가하거나 개념을 정교하게 다듬기를 바랍니다.
 
-## What is in this repository?
+## 이 저장소에는 무엇이 있나요?
 
-This repo consists of 14 hands-on training "MiniProjects". Each MiniProject corresponds with the R concept that the exercise is dedicated to. It is highly recommended to complete exercises 1 through 8 in order since (1) they are build on top of each other and (2) increase in complexity with each next exercise. On the other hand, exercises 9 through 14 can be completed in any order.
+이 저장소는 14개의 실습 "미니 프로젝트"로 구성되어 있습니다. 각 미니 프로젝트는 해당 연습이 다루는 R 개념과 일치합니다. 연습 1부터 8까지는 (1) 서로 연결되어 있고 (2) 다음 연습으로 갈수록 복잡성이 증가하므로 순서대로 완료하는 것을 강력히 권장합니다. 반면에 연습 9부터 14까지는 순서에 상관없이 완료할 수 있습니다.
 
-### List of mini-projects and their topics:
+### 미니 프로젝트 목록 및 주제:
 
-| Filename          | Topic                                                                                                                                                                                                                                        |
-|---------------------|---------------------------------------------------|
-| MiniProject1.Rmd  | Reading data, sorting, filtering, selecting columns, data types, data summaries using the `{skimr}` package.                                                                                                                                 |
-| MiniProject2.Rmd  | Reading data (revisited), counting observations, grouping by variable, joining data, creating new variables with values derived from calculations using existing variables.                                                                  |
-| MiniProject3.Rmd  | Summarising continuous variables to calculate common summary statistics like mean, median, sd, min, max. Pasting values together to create character strings containing values. Transposing datasets using `pivot_longer` and `pivot_wider`. |
-| MiniProject4.Rmd  | Bringing together values calculated in previous MiniProjects to create a table.                                                                                                                                                              |
-| MiniProject5.Rmd  | Creating data visualizations, saving those graphs to file, plotting points and lines, adding summary statistics into visualization, annotating visualizations - labels, titles, subtitles, legends, splitting plots by a grouping factor.    |
-| MiniProject6.Rmd  | Creating "spaghetti plots" of values over time for each subject, highlighting data series that match a given condition, boxplots, plotting distribution of values, barplots to display counts, combining plots                               |
-| MiniProject7.Rmd  | Turning code into functions for reuse                                                                                                                                                                                                        |
-| MiniProject8.Rmd  | Iterating - applying functions to different groupings of values: alternatives to loops.                                                                                                                                                      |
-| MiniProject9.Rmd  | Asking for help using reproducible examples - the `{reprex}` package.                                                                                                                                                                        |
-| MiniProject10.Rmd | Debugging when code and functions go wrong.                                                                                                                                                                                                  |
-| MiniProject11.Rmd | Passing variable names into functions - evaluation. R's equivalent of SAS `&var`.                                                                                                                                                            |
-| MiniProject12.Rmd | Testing (and demonstrating that) functions to ensure they do what is expected. Using the `{testthat}` package. Mini-project12_Example folder includes comprehensive testing examples.                                                        |
-| MiniProject13.Rmd | Code style - be kind to future you (and anyone else that reads your code).                                                                                                                                                                   |
-| MiniProject14.Rmd | R snippets - Learn how to create R snippets to boost productivity and automate make repetitive tasks.                                                                                                                                        |
+| 파일명             | 주제                                                                                                                                                                                                                                                                             |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| MiniProject1.Rmd | 데이터 읽기, 정렬, 필터링, 열 선택, 데이터 유형, `{skimr}` 패키지를 사용한 데이터 요약.                                                                                                                                                                                 |
+| MiniProject2.Rmd | 데이터 읽기 (재검토), 관측치 계산, 변수별 그룹화, 데이터 결합, 기존 변수를 사용하여 계산에서 파생된 값을 가진 새 변수 생성.                                                                                                                                              |
+| MiniProject3.Rmd | 평균, 중앙값, 표준편차, 최소값, 최대값과 같은 일반적인 요약 통계를 계산하기 위해 연속형 변수 요약. 값을 함께 붙여 값을 포함하는 문자열 생성. `pivot_longer` 및 `pivot_wider`를 사용하여 데이터셋 전치.                                                              |
+| MiniProject4.Rmd | 이전 미니 프로젝트에서 계산된 값을 모아 테이블 생성.                                                                                                                                                                                                                             |
+| MiniProject5.Rmd | 데이터 시각화 생성, 그래프를 파일로 저장, 점 및 선 플로팅, 시각화에 요약 통계 추가, 시각화 주석 달기 - 레이블, 제목, 부제목, 범례, 그룹화 요인별 플롯 분할.                                                                                                         |
+| MiniProject6.Rmd | 각 피험자에 대한 시간 경과에 따른 값의 "스파게티 플롯" 생성, 주어진 조건과 일치하는 데이터 시리즈 강조, 상자 그림, 값의 분포 플로팅, 개수를 표시하는 막대 그림, 플롯 결합.                                                                                             |
+| MiniProject7.Rmd | 재사용을 위한 코드를 함수로 전환.                                                                                                                                                                                                                                                |
+| MiniProject8.Rmd | 반복 - 다른 값 그룹에 함수 적용: 루프 대체.                                                                                                                                                                                                                                     |
+| MiniProject9.Rmd | 재현 가능한 예제를 사용하여 도움 요청 - `{reprex}` 패키지.                                                                                                                                                                                                                        |
+| MiniProject10.Rmd| 코드와 함수가 잘못될 때 디버깅.                                                                                                                                                                                                                                                 |
+| MiniProject11.Rmd| 변수 이름을 함수로 전달 - 평가. SAS `&var`와 동등한 R.                                                                                                                                                                                                                           |
+| MiniProject12.Rmd| 함수가 예상대로 작동하는지 테스트 (및 시연). `{testthat}` 패키지 사용. Mini-project12_Example 폴더에는 포괄적인 테스트 예제가 포함되어 있습니다.                                                                                                                           |
+| MiniProject13.Rmd| 코드 스타일 - 미래의 자신 (및 코드를 읽는 다른 사람)에게 친절하세요.                                                                                                                                                                                                           |
+| MiniProject14.Rmd| R 스니펫 - 생산성을 높이고 반복적인 작업을 자동화하는 R 스니펫을 만드는 방법을 배우세요.                                                                                                                                                                                          |
 
-We recognise that many of the tasks presented in MiniProjects1-6 are covered by functionality in the [Pharmaverse](https://pharmaverse.org/) packages like {[admiral](https://github.com/pharmaverse/admiral)}, {[tidytlg](https://github.com/pharmaverse/tidytlg)} and {[tfrmt](https://github.com/GSK-Biostatistics/tfrmt)} but our goal is that colleagues understand the basic building blocks of what R is doing via functions in {[dplyr](https://dplyr.tidyverse.org/)} and other common data manipulation packages first before moving on.
+미니 프로젝트 1-6에서 제시된 많은 작업이 {[admiral](https://github.com/pharmaverse/admiral)}, {[tidytlg](https://github.com/pharmaverse/tidytlg)} 및 {[tfrmt](https://github.com/GSK-Biostatistics/tfrmt)}과 같은 [Pharmaverse](https://pharmaverse.org/) 패키지의 기능으로 다루어진다는 것을 알고 있지만, 우리의 목표는 동료들이 먼저 {[dplyr](https://dplyr.tidyverse.org/)} 및 기타 일반적인 데이터 조작 패키지의 함수를 통해 R이 무엇을 하는지 기본적인 구성 요소를 이해한 다음 진행하는 것입니다.
 
-### Pre-requisites, package installation and \\{renv\\}:
+### 전제 조건, 패키지 설치 및 `{renv}`:
 
-As these MiniProjects are written in Rmarkdown documents, explanation and code are presented together, and we only assume that delegates have access to RStudio IDE and have had an initial orientation about using the IDE and running code with Rmarkdown. We recommend using a consistent environment for delegates, such as that provided by Posit Cloud, Posit Workbench, Docker or similar. Troubleshooting R installation issues across desktop R when there might be a wide range of OS, R versions, installation paths etc. adds a huge overhead to training.
+이 미니 프로젝트는 R마크다운 문서로 작성되었으므로, 설명과 코드가 함께 제공되며, 참가자들이 RStudio IDE에 접근할 수 있고 IDE 사용 및 R마크다운으로 코드 실행에 대한 초기 오리엔테이션을 받았다고 가정합니다. 참가자들에게 Posit Cloud, Posit Workbench, Docker 등과 같이 일관된 환경을 사용하는 것을 권장합니다. 다양한 OS, R 버전, 설치 경로 등으로 인해 데스크톱 R에서 R 설치 문제를 해결하는 것은 훈련에 엄청난 오버헤드를 추가합니다.
 
-Prior to attempting exercises, run setup.R installation script to ensure proper installation of the libraries that are not installed on your machine, but needed for the projects. The code in the script checks if you have all packages necessary for exercises, otherwise installs and loads packages from CRAN.
+연습을 시도하기 전에 setup.R 설치 스크립트를 실행하여 머신에 설치되지 않았지만 프로젝트에 필요한 라이브러리가 제대로 설치되었는지 확인하세요. 스크립트의 코드는 연습에 필요한 모든 패키지가 있는지 확인하고, 그렇지 않으면 CRAN에서 패키지를 설치하고 로드합니다.
 
-We recommend the use of the {renv} package to manage packages associated with this application. This allows you to isolate packages and package versions used with projects in this repository from other projects.
+이 애플리케이션과 관련된 패키지를 관리하기 위해 `{renv}` 패키지를 사용하는 것을 권장합니다. 이를 통해 이 저장소의 프로젝트와 함께 사용되는 패키지 및 패키지 버전을 다른 프로젝트와 분리할 수 있습니다.
 
-To do so, first create a new RStudio project (if you haven't already created an RStudio project based on the Github repository). Be sure to select the option to use {renv} with the project. Open the file "setup.R". If you haven't already, you can install and activate the {renv} framework by running the commented out lines. We have tested the content in this repository using the R packages as at 2024-03-01 and we recommend installing from Posit Package Manager to get those packages at that date and install into the {renv} environment. Please select the appropriate PPM repository for your Operating System (OS). You can then install the package dependencies into the {renv} environment within the project.
+이렇게 하려면 먼저 새 RStudio 프로젝트를 생성합니다 (아직 Github 저장소를 기반으로 RStudio 프로젝트를 생성하지 않았다면). 프로젝트에서 `{renv}`를 사용하는 옵션을 선택해야 합니다. "setup.R" 파일을 엽니다. 아직 `{renv}` 프레임워크를 설치하고 활성화하지 않았다면, 주석 처리된 줄을 실행하여 설치하고 활성화할 수 있습니다. 우리는 2024년 3월 1일자 R 패키지를 사용하여 이 저장소의 콘텐츠를 테스트했으며, 해당 날짜의 패키지를 얻고 `{renv}` 환경에 설치하려면 Posit Package Manager에서 설치하는 것을 권장합니다. 운영 체제 (OS)에 적합한 PPM 저장소를 선택하십시오. 그런 다음 프로젝트 내의 `{renv}` 환경에 패키지 종속성을 설치할 수 있습니다.
 
-### Additional resources in this repository include:
+### 이 저장소의 추가 리소스는 다음과 같습니다:
 
--   /img folder contains images and screenshots used by .Rmd exercises files.
+-   `/img` 폴더에는 .Rmd 연습 파일에서 사용되는 이미지와 스크린샷이 포함되어 있습니다.
+-   Mini-project12_Example 폴더에는 테스트 구조 및 스크립트 예제가 포함되어 있습니다.
 
--   Mini-project12_Example folder contains testing structure and scripts example.
+## 질문, 문의 및 개선 사항은 어떻게 제출해야 하나요?
 
-## How should I submit questions, queries and enhancements?
+이 저장소를 포크하고 풀 리퀘스트를 제출해야 합니다. 문제 및 질문은 이 저장소 내의 Issues 탭에서 제기할 수 있습니다.
 
-You should fork this repository and submit a pull-request. Issues and questions can be raised in the Issues tab within this repository.
+## 저자
 
-## Developers
-
--   Mike K Smith
-
--   Natalia Andriychuk
-
--   Samir Parmar
-
--   Leanne Vicente
-
--   Rajni Bhaya
+- 마이크 K 스미스
+- 나탈리아 안드리이추크
+- 사미르 파마르
+- 린 비센테
+- 라즈니 바야

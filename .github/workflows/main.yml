@@ -1,0 +1,83 @@
+name: Render PDF
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-quarto-book:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Noto CJK Fonts and set locale
+        run: |
+          # 시스템 업데이트 및 Noto CJK 폰트 패키지 설치
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends fonts-noto-cjk fontconfig locales
+          sudo rm -rf /var/lib/apt/lists/*
+
+      - name: Setup Pixi
+        uses: prefix-dev/setup-pixi@v0.8.10
+        with:
+          cache: true
+          cache-write: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
+
+      - name: Add Quarto and Font packages to Pixi environment
+        run: |
+          pixi install
+
+      - name: Install TinyTeX via Quarto
+        run: |
+          pixi run quarto install tool tinytex
+
+      - name: Update TinyTeX font cache
+        run: |
+          # fc-cache -fv 명령은 Noto CJK 폰트가 설치된 후 캐시를 업데이트합니다.
+          sudo fc-cache -fv
+
+      - name: Render Quarto book to PDF
+        # 이 단계는 Quarto 프로젝트 파일(예: .qmd 파일)이 리포지토리의
+        # 'mybook'이라는 디렉토리 내에 있다고 가정합니다.
+        run: |
+          cd mybook
+          pixi run quarto render --to pdf
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: quarto-pdf-book
+          path: mybook/_book/mybook.pdf
+          # 생성된 PDF 파일을 'quarto-pdf-book'이라는 이름의 아티팩트로 업로드합니다.
+
+  create-release:
+    needs: build-quarto-book # 이 작업은 'build-quarto-book' 작업이 성공적으로 완료된 후에 실행됩니다.
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' # main 브랜치에 푸시할 때만 릴리스를 생성합니다.
+    permissions:
+      contents: write # 릴리스를 생성하고 파일을 업로드하기 위한 쓰기 권한이 필요합니다.
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        # 릴리스 작업을 위해 리포지토리를 체크아웃합니다.
+
+      - name: Download PDF artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: quarto-pdf-book
+          path: . # 이전 작업에서 업로드된 PDF 아티팩트를 현재 디렉토리로 다운로드합니다.
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ github.run_number }} # 워크플로우 실행 번호를 사용하여 태그 이름을 생성합니다.
+          name: Release ${{ github.run_number }} # 릴리스 이름을 설정합니다.
+          body: Automated release of Quarto PDF book. # 릴리스 본문을 설정합니다.
+          files: mybook.pdf # 다운로드된 PDF 파일을 릴리스에 첨부합니다.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub 토큰을 사용하여 릴리스를 인증합니다.
