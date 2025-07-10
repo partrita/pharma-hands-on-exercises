@@ -18,7 +18,7 @@ In this document you'll see code chunks (typically on a light grey background) a
 In this project we will be taking our code from Projects 2 and 3 and combining them to create output similar to that of our demog reference table
 
 In this project we are working towards creating a demography summary table similar to this one: 
-![Demographic table](img/MiniProject4_demog_table.png). After completing the challenge, the updated table should be similar to this one:![Final demographic table](img/demog_summary_table.png)
+![Demographic table](img/MiniProject4_demog_table.png). After completing the challenge, the updated table should be similar to this one:![Final demographic table](img/MiniProject3_demog_summary_table.png)
 
 For steps 1-7 we will be re-doing the code we did in Projects 2 and 3. We will not be breaking it up and explaining the code for these steps since this is taken directly from Projects 2 and 3. You can refer to those trainings for a full explanation of the code and logic used here.
 
