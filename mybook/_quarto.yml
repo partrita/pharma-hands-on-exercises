@@ -56,7 +56,11 @@ format:
     include-in-header: 
       text: |
         \usepackage{pdfpages}
-        \lstset{breaklines=true} # 코드 줄바꿈
+        \usepackage{fvextra}
+        \DefineVerbatimEnvironment{Highlighting}{Verbatim}{
+          commandchars=\\\{\},
+          breaklines, breaknonspaceingroup, breakanywhere
+        }
 
 mainfont: "Noto Serif CJK KR"
 sansfont: "Noto Sans CJK KR"
