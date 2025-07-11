@@ -39,6 +39,11 @@ format:
   pdf:
     documentclass: report
     papersize: a4
+    geometry:
+      - top=25mm
+      - left=25mm
+      - right=25mm
+      - bottom=25mm
     toc: true
     toc-depth: 2
     number-sections: true
@@ -51,6 +56,7 @@ format:
     include-in-header: 
       text: |
         \usepackage{pdfpages}
-    
+        \lstset{breaklines=true} # 코드 줄바꿈
+
 mainfont: "Noto Serif CJK KR"
 sansfont: "Noto Sans CJK KR"
