@@ -18,8 +18,9 @@ knitr::opts_chunk_set(echo = TRUE)
 3. `debugonce()` , `browser()` 및 RStudio IDE 중단점.
 4. `traceback()`, `options(error = recover)`,
 
-막히면 이 비디오를 검토하십시오:\
-<https://www.youtube.com/watch?v=vgYS-F8opgE>
+막히면 이 비디오를 검토하십시오:
+
+- https://www.youtube.com/watch?v=vgYS-F8opgE
 
 ## 깨끗한 환경을 유지하자
 
@@ -70,6 +71,7 @@ R이 "이상하게" 작동하는 경우 세션을 다시 시작하고 다시 시
 이를 설명하기 위해 정말 간단한 함수를 만들어 보겠습니다. 시작하기 전에 빗자루 버튼을 사용하여 환경을 지우거나 R을 다시 시작했는지 확인하십시오. 실행하기 전에 `myFunction(2)`의 결과는 무엇입니까?
 
 ```{r}
+#| eval: false
 myFunction <- function(x){
   a <- 3
   x + a
@@ -81,6 +83,7 @@ myFunction(2)
 이제 이 코드를 시도해 보십시오. 실행하기 전에 `myFunction(2)`의 결과는 무엇입니까?
 
 ```{r}
+#| eval: false
 a <- 4
 
 myFunction(2)
@@ -89,6 +92,7 @@ myFunction(2)
 그리고 이제 `a`의 값은 무엇입니까?
 
 ```{r}
+#| eval: false
 a
 ```
 
@@ -97,6 +101,7 @@ a
 함수 내에서 `a`의 값을 어떻게 "볼" 수 있습니까?
 
 ```{r}
+#| eval: false
 debugonce(myFunction)
 myFunction(2)
 ```
@@ -114,13 +119,14 @@ RStudio는 또한 별도의 창에서 함수 `myFunction` 코드를 열었고 �
 여기서 할 수 있는 일은 함수의 개별 줄을 실행하고, 명령을 제출하고, 함수 환경에서 새 객체를 만들거나 값을 바꾸는 것입니다.\
 함수의 각 줄을 단계별로 실행하면 함수 환경 내에서 `a`에 할당된 값이 3임을 알 수 있습니다. 함수의 각 줄을 단계별로 실행하면서 함수와 관련된 환경에서 새 객체가 정의되고 사용되는 것을 볼 수 있습니다.
 
-RStudio의 환경 탭 내에서 함수 환경 `myFunction()`과 `전역 환경` 사이를 전환하여 함수 내부와 외부에서 `a`가 어떻게 다른지, 그리고 `a`가 두 곳에 정의되어 있는지 확인할 수 있습니다...
+RStudio의 환경 탭 내에서 함수 환경 `myFunction()`과 `전역 환경` 사이를 전환하여 함수 내부와 외부에서 `a`가 어떻게 다른지, 그리고 `a`가 두 곳에 정의되어 있는지 확인할 수 있습니다.
 
 ## 인셉션 - 토끼굴 속으로
 
 함수를 호출하는 함수가 있는 경우 디버그 모드는 무엇을 보여줍니까? `myFunction`의 결과를 가져와 결과를 제곱하는 새 함수를 정의해 보겠습니다.
 
 ```{r}
+#| eval: false
 myFunction_add3_and_squareit <- function(x){
   y <- myFunction(x)
   y*y
@@ -130,6 +136,7 @@ myFunction_add3_and_squareit <- function(x){
 다음 코드를 실행할 때 콘솔에서 먼저 `debugonce(myFunction_add3_and_squareit)`를 지정하는 것을 잊지 마십시오. 그렇지 않으면 코드가 끝까지 실행됩니다...
 
 ```{r}
+#| eval: false
 myFunction_add3_and_squareit(4)
 ```
 
@@ -137,7 +144,7 @@ myFunction_add3_and_squareit(4)
 
 ### 디버그 모드에 갇히지 마십시오!
 
-디버거가 열리면 콘솔의 특수 "디버그" 모드에 있게 됩니다. 이렇게 하면 함수를 한 줄씩 단계별로 실행하거나 함수가 함수를 호출하는 경우 하위 수준 함수로 들어갈 수 있습니다... 위 이미지에서 그림의 왼쪽 하단에 디버그 콘솔이 어떻게 생겼는지 볼 수 있습니다.
+디버거가 열리면 콘솔의 특수 "디버그" 모드에 있게 됩니다. 이렇게 하면 함수를 한 줄씩 단계별로 실행하거나 함수가 함수를 호출하는 경우 하위 수준 함수로 들어갈 수 있습니다. 위 이미지에서 그림의 왼쪽 하단에 디버그 콘솔이 어떻게 생겼는지 볼 수 있습니다.
 
 문제를 해결한 후에는 "디버그" 모드에 갇히지 마십시오! 콘솔 보기에서 "중지" 버튼(빨간색 사각형)을 확인하십시오. "중지"를 클릭하여 "디버그" 모드를 종료하고 일반 R 세션으로 돌아갑니다.
 
@@ -152,6 +159,7 @@ myFunction_add3_and_squareit(4)
 콘솔에 인쇄되는 내용을 식별하기 위해 `paste()`를 사용하는 것이 좋습니다. 즉, `print(paste("a:",a))`
 
 ```{r}
+#| eval: false
 myFunction <- function(x){
   print("함수 내:")
   a <- 3
@@ -177,6 +185,7 @@ myFunction(2)
 아래 함수에서는 `Sys.sleep` 함수를 사용하여 15초 동안 기다려 업스트림 코드 실행을 기다려야 하는 상황을 시뮬레이션하고 있습니다. 그런 다음 `browser` 문이 적용되고 디버거를 엽니다. 디버거가 열리면 실행할 다음 줄은 `Sys.sleep` 함수 호출 다음 줄이라는 점에 유의하십시오.
 
 ```{r}
+#| eval: false
 myFunction_add3_and_squareit <- function(x){
   y <- myFunction(x)
   browser()
@@ -202,6 +211,7 @@ RStudio IDE에서 "MiniProject10_breakpoint_script.R" 파일을 엽니다.
 R에서 오류가 발생하면 R 콘솔에 오류가 표시되는 경우가 있습니다.
 
 ```{r}
+#| eval: false
 myFunction_add3_and_squareit("a")
 ```
 
@@ -214,7 +224,7 @@ RStudio는 청크 결과에 "추적 표시"라는 작은 버튼을 추가합니�
 일반적으로 오류가 발생하면 R은 실행을 중지하고 오류 메시지를 인쇄하며 (RStudio IDE에 있는 경우) traceback()을 사용하여 문제가 발생한 위치를 볼 수 있는 옵션을 제공합니다. 그러나 `options(error = recover)`를 지정하면 함수에서 빠져나오는 대신 R은 오류가 발생한 위치에서 정확히 일시 중지하여 현장에서 문제를 해결할 수 있습니다. 발생하는 일은 `traceback()` 스택에서 디버깅을 시작할 위치를 선택할 수 있는 옵션이 있다는 것입니다. RStudio IDE를 사용하는 경우 `debugonce()`에서 본 디버그 모드에 있으며 코드를 단계별로 실행하여 문제를 찾을 수 있습니다.
 
 ```{r}
-
+#| eval: false
 options(error = recover)
 myFunction_add3_and_squareit("a")
 ```
