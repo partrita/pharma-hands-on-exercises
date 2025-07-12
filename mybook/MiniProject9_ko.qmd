@@ -12,11 +12,13 @@ library(tidyverse)
 library(rio)
 ```
 
-Reprex는 재현 가능한 예제(reproducible example)를 의미합니다! 이것은 이 미니 프로젝트 시리즈의 새로운 패키지입니다. (tidyverse를 설치할 때 설치되는 많은 패키지 중 하나일 수도 있습니다. 패키지 탭을 보고 이미 설치되어 있는지 확인할 수 있습니다.) reprex는 'rmarkdown' 패키지를 사용하여 작은 코드 스니펫을 코드와 출력을 모두 포함하는 대상 형식으로 렌더링하는 편의 래퍼입니다. 목표는 작고 재현 가능하며 실행 가능한 예제의 공유를 장려하는 것입니다. 누군가 코드 디버깅을 도울 때 코드를 다시 포맷하고, 결과와 명령 프롬프트를 제거하고, 어떤 패키지를 로드했는지 추측할 필요가 없으면 도움이 됩니다. 이것은 코드를 다시 생성하거나 동료 그룹에서 디버깅하는 데 좋습니다. Reprex는 다른 사람들이 쉽게 실행하고 오류를 수정하는 데 도움이 되도록 코드, 출력 및 문제에 대한 정보를 패키징합니다. *** R 세션의 스크린샷을 찍는 대신 이 작업을 수행하십시오! *** 오류 스크린샷을 보내면 도움을 주는 사람이 코드를 직접 다시 실행할 수 없으며 코드를 다시 입력해야 합니다(그리고 필연적으로 필사 과정에서 오타와 실수가 발생합니다). 이것은 끔찍하게 비효율적입니다...
+Reprex는 재현 가능한 예제(reproducible example)를 의미합니다! 이것은 이 미니 프로젝트 시리즈의 새로운 패키지입니다. (tidyverse를 설치할 때 설치되는 많은 패키지 중 하나일 수도 있습니다. 패키지 탭을 보고 이미 설치되어 있는지 확인할 수 있습니다.) reprex는 'rmarkdown' 패키지를 사용하여 작은 코드 스니펫을 코드와 출력을 모두 포함하는 대상 형식으로 렌더링하는 편의 래퍼입니다. 목표는 작고 재현 가능하며 실행 가능한 예제의 공유를 장려하는 것입니다. 누군가 코드 디버깅을 도울 때 코드를 다시 포맷하고, 결과와 명령 프롬프트를 제거하고, 어떤 패키지를 로드했는지 추측할 필요가 없으면 도움이 됩니다. 이것은 코드를 다시 생성하거나 동료 그룹에서 디버깅하는 데 좋습니다. Reprex는 다른 사람들이 쉽게 실행하고 오류를 수정하는 데 도움이 되도록 코드, 출력 및 문제에 대한 정보를 패키징합니다.  R 세션의 스크린샷을 찍는 대신 이 작업을 수행하십시오!  오류 스크린샷을 보내면 도움을 주는 사람이 코드를 직접 다시 실행할 수 없으며 코드를 다시 입력해야 합니다(그리고 필연적으로 필사 과정에서 오타와 실수가 발생합니다). 이것은 끔찍하게 비효율적입니다...
 
 실행 가능한 코드 + 출력을 Markdown 파일, R 코드 또는 일반 HTML 텍스트로 출력합니다.
 
-1.  가장 기본적인 예. reprex를 실행하려면 Ctrl + C를 사용하여 아래 코드를 모두 복사한 다음 콘솔 창에서 reprex()를 실행하십시오.
+## 가장 기본적인 예시
+
+`reprex`를 실행하려면 `Ctrl + C`를 사용하여 아래 코드를 모두 복사한 다음 콘솔 창에서 `reprex()`를 실행하십시오.
 
 ```{r}
 (y <- 1:4)
@@ -35,7 +37,7 @@ Created on 2023-03-08 with reprex v2.0.2
 
 또한 해당 창의 내용을 클립보드로 다시 복사하므로 이메일이나 MS Teams 게시물에 간단히 붙여넣을 수 있습니다.
 
-2.  이제 미니 프로젝트의 첫 번째 라운드에서 변수 SEX를 재코딩하는 데 사용한 일부 코드를 가져와 해당 reprex를 살펴보겠습니다. 다시 말하지만, 다음 청크의 모든 코드를 복사한 다음 화면 하단의 콘솔에 reprex()를 입력하십시오.
+## 이제 미니 프로젝트의 첫 번째 라운드에서 변수 SEX를 재코딩하는 데 사용한 일부 코드를 가져와 해당 reprex를 살펴보겠습니다. 다시 말하지만, 다음 청크의 모든 코드를 복사한 다음 화면 하단의 콘솔에 reprex()를 입력하십시오.
 
 ```{r age data}
 
@@ -50,9 +52,10 @@ adsl_saf <- adsl %>%
 
 여기서 우리가 얻는 오류는 reprex가 `read_xpt` 함수를 찾을 수 없었고 파이프 "%>%" 함수를 식별할 수 없다는 것입니다. 이는 R 환경에 tidyverse를 로드했지만 reprex에 포함되지 않았기 때문입니다.
 
-```         
-adsl <- read_xpt("https://github.com/phuse-org/phuse-scripts/raw/master/data/adam/cdisc/adsl.xpt")
-#> Error in read_xpt("https://github.com/phuse-org/phuse-scripts/raw/master/data/adam/cdisc/adsl.xpt"): could not find function "read_xpt"
+```{r}
+#| eval: false
+adsl <- read_xpt("./data/adsl.xpt")
+#> Error in read_xpt("./data/adsl.xpt"): could not find function "read_xpt"
 
 adsl_saf <- adsl %>%
   filter(SAFFL == "Y" ) %>%
@@ -63,15 +66,11 @@ Created on 2023-03-08 with reprex v2.0.2
 
 ## 재현 가능한 예제에 포함할 내용:
 
-1.  배경 정보 -- 무엇을 하려고 합니까? 이미 무엇을 했습니까?
-
-2.  완전한 설정 -- 문제를 재현하는 데 필요한 모든 library() 호출 및 데이터를 포함합니다.
-
-    a.  (따라서 위의 내 코드는 실제로 올바르지 않습니다. 왜냐하면 내 라이브러리 문이 다른 R 청크에 있기 때문입니다.)
-
-3.  간단하게 유지 -- 제공된 데이터에서 오류를 재현하는 데 필요한 최소한의 코드만 포함합니다.
-
-4.  따라서 위 코드의 더 나은 버전은 다음과 같습니다. 이 청크의 모든 코드를 복사한 다음 콘솔에서 reprex()를 실행하십시오.
+1. 배경 정보 -- 무엇을 하려고 합니까? 이미 무엇을 했습니까?
+2. 완전한 설정 -- 문제를 재현하는 데 필요한 모든 library() 호출 및 데이터를 포함합니다.
+  a. (따라서 위의 내 코드는 실제로 올바르지 않습니다. 왜냐하면 내 라이브러리 문이 다른 R 청크에 있기 때문입니다.)
+3. 간단하게 유지 -- 제공된 데이터에서 오류를 재현하는 데 필요한 최소한의 코드만 포함합니다.
+4. 따라서 위 코드의 더 나은 버전은 다음과 같습니다. 이 청크의 모든 코드를 복사한 다음 콘솔에서 reprex()를 실행하십시오.
 
 ```{r}
 library(tidyverse)
@@ -89,7 +88,7 @@ adsl_saf <- adsl %>%
 
 여기에는 모든 것이 하나의 멋지고 깔끔한 코드 청크에 있습니다. 여기에서 여전히 일부 "경고"가 들어올 수 있지만 청크가 작동하는 것을 막는 종류의 경고는 아니라는 것을 알 수 있습니다. 패키지 버전에 대한 경고를 받고 있습니다. 이것이 코드가 작동하지 않거나 작동하지 않는다는 의미는 아닙니다. 다른 사람들에게 R에 다운로드한 패키지 버전을 알려주는 것뿐입니다. 그러나 이제 파이프 (%>%)에 대한 경고가 사라진 것을 볼 수 있습니다.
 
-4.  이제 약간 더 복잡한 예를 살펴보겠습니다. 이것은 원래 미니 프로젝트 6에서 사용된 일부 코드입니다. 이 청크의 모든 코드를 복사한 다음 콘솔에서 reprex()를 실행하십시오. 참고: 데이터가 로드되는 데 시간이 걸릴 수 있습니다.
+## 이제 약간 더 복잡한 예를 살펴보겠습니다. 이것은 원래 미니 프로젝트 6에서 사용된 일부 코드입니다. 이 청크의 모든 코드를 복사한 다음 콘솔에서 reprex()를 실행하십시오. 참고: 데이터가 로드되는 데 시간이 걸릴 수 있습니다.
 
 ```{r}
 library(tidyverse)
@@ -127,7 +126,7 @@ library(tidyverse)
 library(haven)
 #> Warning: package 'haven' was built under R version 3.5.3
 
-ALT <- read_xpt("https://github.com/phuse-org/phuse-scripts/raw/master/data/adam/cdisc/adlbhy.xpt") %>%
+ALT <- read_xpt("./data/adlbhy.xpt") %>%
   filter(PARAMCD == "ALT")
 
 ALT2 <- ALT %>%
@@ -147,14 +146,14 @@ Created on 2023-03-08 with reprex v2.0.2
 
 reprex에 필요한 패키지가 포함되어 있는 한 이 코드에는 문제가 없습니다.
 
-5.  플롯을 포함한 reprex 살펴보기.
+## 플롯을 포함한 reprex 살펴보기.
 
 ```{r}
 library(tidyverse)
 library(rio)
 
 
-ALT <- import("https://github.com/phuse-org/phuse-scripts/raw/master/data/adam/cdisc/adlbhy.xpt") %>%
+ALT <- import("./data/adlbhy.xpt") %>%
   filter(PARAMCD == "ALT")
 
 
@@ -168,7 +167,9 @@ ALT2 %>%
   geom_boxplot(mapping = aes(x = as.factor(WEEK), y = AVAL))
 ```
 
-```         
+실행결과
+
+```
 library(tidyverse)
 #> Warning: package 'tidyverse' was built under R version 3.5.3
 #> Warning: package 'ggplot2' was built under R version 3.5.3
@@ -182,7 +183,7 @@ library(tidyverse)
 library(haven)
 #> Warning: package 'haven' was built under R version 3.5.3
 
-ALT <- read_xpt("https://github.com/phuse-org/phuse-scripts/raw/master/data/adam/cdisc/adlbhy.xpt") %>%
+ALT <- read_xpt("./data/adlbhy.xpt") %>%
   filter(PARAMCD == "ALT")
 
 
@@ -194,12 +195,13 @@ ALT2 %>%
   filter(WEEK %in% c(0, 5, 10, 15, 20, 25, 30)) %>%
   ggplot() +
   geom_boxplot(mapping = aes(x = as.factor(WEEK), y = AVAL))
+
 Created on 2023-03-08 with reprex v2.0.2
 ```
 
 여기서 플롯을 생성하더라도 reprex는 실제로 변경되지 않는 것을 볼 수 있습니다. 뷰어 창에서 reprex를 볼 수 있고 그 아래에 출력 그래프가 표시되지만 실제로는 reprex의 일부가 아닙니다.
 
-하지만... 이 마지막 두 예는 ***최소한으로 재현 가능한 예제***가 아닙니다. 이를 다시 실행하려면 도움을 주는 사람이 데이터베이스 및/또는 참조하는 데이터셋에 액세스할 수 있어야 합니다. 그리고 해당 데이터셋이 크거나 읽는 데 시간이 걸리는 경우, 실제로 묻는 것이 플롯 코드에 관한 것이라면 문제 해결 프로세스에 오버헤드가 됩니다. 그렇다면 이 문제 설명을 더 작고 "최소한"으로 만들려면 어떻게 해야 할까요?
+하지만... 이 마지막 두 예는 최소한으로 재현 가능한 예제가 아닙니다. 이를 다시 실행하려면 도움을 주는 사람이 데이터베이스 및/또는 참조하는 데이터셋에 액세스할 수 있어야 합니다. 그리고 해당 데이터셋이 크거나 읽는 데 시간이 걸리는 경우, 실제로 묻는 것이 플롯 코드에 관한 것이라면 문제 해결 프로세스에 오버헤드가 됩니다. 그렇다면 이 문제 설명을 더 작고 "최소한"으로 만들려면 어떻게 해야 할까요?
 
 5.5 tribble에 대한 간략한 옆길. 다음 예에서는 `tribble()` 함수를 사용할 것입니다. 그렇다면 tribble이란 무엇일까요? tribble은 작은 데이터 세트를 설정하는 빠르고 간단한 방법입니다. reprex에서 사용하기에 이상적입니다.
 
@@ -216,14 +218,14 @@ myData <- tribble(
   "Active", 4
 )
 
-myData
+head(myData)
 ```
 
 여기서 myData는 4개의 행과 2개의 열이 있는 데이터 프레임임을 알 수 있습니다. Treatment는 문자 변수이고 value는 dbl(숫자) 변수입니다. reprex에 대해 매우 간결하고 간단한 것을 만드는 것은 컴퓨팅 시간이 덜 걸리고 필요한 변수만으로 문제를 좁히기 때문에 매우 도움이 될 수 있습니다.
 
-플롯에 대해 묻는 reprex를 만드는 경우 코드가 이전에 3단계의 데이터 조작이 있는 경우 데이터 조작을 복제하지 마십시오. 플롯에 들어가는 데이터의 형식을 설명하는 `tribble`로 바로 이동하십시오. 그리고 해당 데이터 조작의 출력이 무엇인지 추측하고 "이상화된" tribble을 지정하지 마십시오. 조작 후 가지고 있는 데이터를 검사하고 조작된 데이터에서 보는 것과 똑같이 플롯에 필요한 열만 전달하십시오. 원하는 경우 연속 결과에 대해 임의의 값을 사용할 수 있습니다. 요점은 반드시 ***값***이 무엇인지가 아니라 데이터의 구조와 관련이 있는 경우가 많습니다.
+플롯에 대해 묻는 reprex를 만드는 경우 코드가 이전에 3단계의 데이터 조작이 있는 경우 데이터 조작을 복제하지 마십시오. 플롯에 들어가는 데이터의 형식을 설명하는 `tribble`로 바로 이동하십시오. 그리고 해당 데이터 조작의 출력이 무엇인지 추측하고 "이상화된" tribble을 지정하지 마십시오. 조작 후 가지고 있는 데이터를 검사하고 조작된 데이터에서 보는 것과 똑같이 플롯에 필요한 열만 전달하십시오. 원하는 경우 연속 결과에 대해 임의의 값을 사용할 수 있습니다. 요점은 반드시 값이 무엇인지가 아니라 데이터의 구조와 관련이 있는 경우가 많습니다.
 
-6.  사용자 생성 함수에 대한 Reprex.
+6. 사용자 생성 함수에 대한 Reprex.
 
 ```{r}
 library(dplyr)
@@ -305,38 +307,38 @@ Created on 2023-03-08 with reprex v2.0.2
 
 ## 마지막 순간 해야 할 일과 하지 말아야 할 일.
 
--   rm(list = ls())로 청크를 시작하지 마십시오. 도움을 주려는 사람의 현재 환경을 지워버릴 것입니다. 그들은 아마 감사하지 않을 것입니다. (작업 공간은 SAS 작업 디렉토리와 같으며 이 명령은 SAS kill을 실행하는 것과 같습니다.)
--   다른 사람의 컴퓨터에서는 작동하지 않으므로 setwd("C:/Users/<yourUsername>/Documents/")로 시작하지 마십시오.
--   문제를 설명하는 데 필요한 패키지만 호출하십시오.
--   문제를 설명하는 코드만 포함하십시오.
--   문제를 설명하는 ***가장 작은*** 데이터셋을 포함하십시오.
--   reprex 패키지에서 파일을 만드는 경우, 다른 사람의 작업 공간을 망치지 않도록 완료되면 삭제하십시오.
+- rm(list = ls())로 청크를 시작하지 마십시오. 현재 환경을 지워버릴 것입니다. (작업 공간은 SAS 작업 디렉토리와 같으며 이 명령은 SAS kill을 실행하는 것과 같습니다.)
+- 다른 사람의 컴퓨터에서는 작동하지 않으므로 setwd("C:/Users/<yourUsername>/Documents/")로 시작하지 마십시오.
+- 문제를 설명하는 데 필요한 패키지만 호출하십시오.
+- 문제를 설명하는 코드만 포함하십시오.
+- 문제를 설명하는 가장 작은 데이터셋을 포함하십시오.
+- reprex 패키지에서 파일을 만드는 경우, 다른 사람의 작업 공간을 망치지 않도록 완료되면 삭제하십시오.
 
-더 많은 해야 할 일과 하지 말아야 할 일: <https://reprex.tidyverse.org/articles/reprex-dos-and-donts.html>
+더 많은 해야 할 일과 하지 말아야 할 일:
+
+- https://reprex.tidyverse.org/articles/reprex-dos-and-donts.html
 
 ## 추가 자료:
 
 Jennifer Bryan의 "Help me help you: Creating reproducible examples with reprex":
 
--   <https://reprex.tidyverse.org/articles/learn-reprex.html>
-
--   <https://posit.co/resources/videos/help-me-help-you-creating-reproducible-examples/>
+- https://reprex.tidyverse.org/articles/learn-reprex.html
+- https://posit.co/resources/videos/help-me-help-you-creating-reproducible-examples
 
 ## 함정
 
--   필요한 모든 `library()` 호출을 포함하는 것을 잊었습니까?
--   사용 중인 데이터/tibble에 필요한 모든 변수가 있습니까?
--   `reprex::reprex()`를 실행했지만 클립보드에 새 콘텐츠를 복사하지 않고 다시 실행했습니까? `reprex`는 `reprex`의 결과를 클립보드에 복사하기 때문에 이렇게 하면 경고합니다. `reprex`를 다시 실행하면 이전 `reprex`의 출력에서 `reprex`를 실행하려고 시도합니다.
+- 필요한 모든 `library()` 호출을 포함하는 것을 잊었습니까?
+- 사용 중인 데이터/tibble에 필요한 모든 변수가 있습니까?
+- `reprex::reprex()`를 실행했지만 클립보드에 새 콘텐츠를 복사하지 않고 다시 실행했습니까? `reprex`는 `reprex`의 결과를 클립보드에 복사하기 때문에 이렇게 하면 경고합니다. `reprex`를 다시 실행하면 이전 `reprex`의 출력에서 `reprex`를 실행하려고 시도합니다.
 
 ## 최종 참고 사항:
 
 훌륭한 reprex를 만드는 데는 노력이 필요합니다. 다른 사람들에게 당신을 위해 일해달라고 요청하기 때문에 reprex를 만들 가능성이 높습니다. 그것은 파트너십입니다. 종종 훌륭한 reprex를 작성하는 과정에서 자신의 문제를 해결하게 될 것입니다. 그리고 그렇지 않은 경우, 다른 사람들이 문제를 해결하는 데 도움이 되도록 쉽게 공유할 수 있는 reprex를 갖게 될 것입니다.
 
-## 챌린지: 여기서 무엇이 잘못되었습니까?
-
-다른 사람이 문제를 이해하고 해결하는 데 도움이 될 더 최소한의 reprex를 만드십시오.
+## 챌린지: 다른 사람이 문제를 이해하고 해결하는 데 도움이 될 더 최소한의 reprex를 만드십시오.
 
 ```{r}
+#| eval: false
 library(tidyverse)
 library(rio)
 
@@ -345,7 +347,6 @@ adlb <- import("./data/adlbh.xpt")
 BICARB <- adlb %>%  
     filter(SAFFL == "Y") %>% 
     filter(PARAMCD == "BASO")
-
 
 ggplot(data = BICARB,
        mapping = aes(x = ADY, y = AVAL)) +

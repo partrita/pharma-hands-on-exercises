@@ -167,11 +167,12 @@ ggplot(${1:data}, aes(x=${2:variable}, y=${3:variable})) +
 
 
 ##참조
+
 -	https://rstudio.github.io/rstudio-extensions/rstudio_snippets.html 
 -	https://support.posit.co/hc/en-us/articles/204463668-Code-Snippets 
 -	https://dcl-workflow.stanford.edu/rstudio-snippets.html 
 -	https://www.infoworld.com/article/3396616/how-to-use-rstudio-code-snippets.html 
--	https://usethis.r-lib.org/ 
+-	https://usethis.r-lib.org
 - https://cran.r-project.org/web/packages/usethis/index.html 
 - https://usethis.r-lib.org/reference/edit.html
 
