@@ -30,7 +30,7 @@ book:
 
 #bibliography: references.bib
 link-citations: true
-
+number-sections: false
 format:
   html:
     theme:
@@ -46,7 +46,6 @@ format:
       - bottom=25mm
     toc: true
     toc-depth: 2
-    number-sections: true
     colorlinks: true
     fig_width: 3
     fig_height: 2
