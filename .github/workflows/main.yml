@@ -1,10 +1,15 @@
-name: Render PDF and Release
+name: Render Book and Deploy
 
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
 
 jobs:
   build-quarto-book:
@@ -26,7 +31,7 @@ jobs:
           cache: true
           cache-write: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
 
-      - name: Add Quarto and Font packages to Pixi environment
+      - name: Install dependencies
         run: |
           pixi install
 
@@ -38,10 +43,10 @@ jobs:
         run: |
           sudo fc-cache -fv
 
-      - name: Render Quarto book to PDF
+      - name: Render Quarto book (HTML and PDF)
         run: |
           cd mybook
-          pixi run quarto render --to pdf
+          pixi run quarto render
 
       - name: Upload PDF artifact
         uses: actions/upload-artifact@v4
@@ -49,12 +54,29 @@ jobs:
           name: quarto-pdf-book
           path: mybook/_book/Pharma-Hands-on-Exercises.pdf
 
+      - name: Upload Pages artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: mybook/_book/
+
+  deploy-gh-pages:
+    needs: build-quarto-book
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
   create-release:
     needs: build-quarto-book
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    permissions:
-      contents: write
 
     steps:
       - name: Download PDF artifact
@@ -70,8 +92,8 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref_name }}-v${{ github.run_number }}-${{ steps.date.outputs.date }}
-          name: Release ${{ github.ref_name }} v${{ github.run_number }} (${{ steps.date.outputs.date }})
+          tag_name: v${{ steps.date.outputs.date }}
+          name: Release ${{ steps.date.outputs.date }}
           body: Automated release of Quarto PDF book for commit ${{ github.sha }}.
           files: Pharma-Hands-on-Exercises.pdf
         env:
