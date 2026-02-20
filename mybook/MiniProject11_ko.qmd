@@ -80,6 +80,7 @@ plot_bar(adsl_saf, SEX)
 함수 내부에서 새로운 변수 이름을 동적으로 지정하고 싶을 때는 `=` 대신 `:=` (**Walrus 연산자**)를 사용해야 합니다.
 
 ```{r walrus}
+data(mpg)
 summary_mean <- function(df, summary_var, new_name) {
   df %>% 
     summarize({{ new_name }} := mean({{ summary_var }}))
